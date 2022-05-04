@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {useParams } from "react-router-dom";
 import { Card } from "@mui/material";
 import "./Home.css";
+import {useLocation} from 'react-router-dom';
 
 export default function Home() {
   let params = useParams();
   const [isLoading, setIsLoading] = React.useState(true);
-  const [data, setData] = React.useState(null);
-
+  const [isTeacher, setIsTeacher] = React.useState(false);
+  const {state} = useLocation();
+  const {data} = state;
+  useEffect(() => {
+  setIsTeacher(data.role === "teacher");
+  setIsLoading(false);
+  }, [data]);
   return (
     <>
     <div className="Container">
@@ -23,10 +29,10 @@ export default function Home() {
         }>
           Go to App
         </button>
-        </div>
-        <div className="Card">
-        <h3>Teacher's Dashboard</h3>
-        <button onClick={
+        </div> 
+           <div className = "Card">
+        <h3 className= {`${isTeacher ? "" : "HeadingDisabled"}`}>Teacher's Dashboard</h3>
+        <button className= {`${isTeacher ? "" : "ButtonDisabled"}`} onClick={
           () => {
             window.location.href = `http://localhost:3008`
           }
